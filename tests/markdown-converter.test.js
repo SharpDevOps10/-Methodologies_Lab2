@@ -8,8 +8,8 @@ describe('bold testcases', () => {
   });
 
   test('shouldn\'t convert asterisk signs separated from the text into HTML bold tag', () => {
-    const markdown = 'This is ** example is not an element of the markup **';
-    const expectedHTML = '<p>This is ** example is not an element of the markup **\n</p>';
+    const markdown = 'This ** example is not an element of the markup **';
+    const expectedHTML = '<p>This ** example is not an element of the markup **\n</p>';
     expect(convertMarkdownToHTML(markdown)).toStrictEqual(expectedHTML);
   });
 
@@ -27,8 +27,8 @@ describe('italic testcases', () => {
   });
 
   test('shouldn\'t convert underscore signs separated from the text into HTML italic tag', () => {
-    const markdown = 'This is _ example is not an element of the markup _';
-    const expectedHTML = '<p>This is _ example is not an element of the markup _\n</p>';
+    const markdown = 'This _ example is not an element of the markup _';
+    const expectedHTML = '<p>This _ example is not an element of the markup _\n</p>';
     expect(convertMarkdownToHTML(markdown)).toStrictEqual(expectedHTML);
   });
 
@@ -45,8 +45,60 @@ describe('italic testcases', () => {
   });
 
   test('should italicize text enclosed in underscores in HTML italic tag', () => {
-    const markdown = '_hello_everybody_everywhere_';
-    const expectedHTML = '<p><i>hello_everybody_everywhere</i>\n</p>';
+    const markdown = '_Good_night_everybody_';
+    const expectedHTML = '<p><i>Good_night_everybody</i>\n</p>';
     expect(convertMarkdownToHTML(markdown)).toStrictEqual(expectedHTML);
+  });
+
+  test('should throw an error if monospace markup is not closed', () => {
+    const markdown = 'This example will throw an _error';
+    expect(() => convertMarkdownToHTML(markdown)).toThrowError('Unclosed tag was found');
+  });
+});
+
+describe('monospace testcases', () => {
+  test('should convert monospaced text into HTML text with <tt></tt> tag', () => {
+    const markdown = 'Hello `monospaced world`!';
+    const expectedHTML = '<p>Hello <tt>monospaced world</tt>!\n</p>';
+    expect(convertMarkdownToHTML(markdown)).toStrictEqual(expectedHTML);
+  });
+
+  test('shouldn\'t convert monospaced signs separated from the text into HTML monospace tag', () => {
+    const markdown = 'This is ` example is not an element of the markup `';
+    const expectedHTML = '<p>This is ` example is not an element of the markup `\n</p>';
+    expect(convertMarkdownToHTML(markdown)).toStrictEqual(expectedHTML);
+  });
+
+  test('shouldn\'t interpret single apostrophe sign as an example of monospace markup', () => {
+    const markdown = 'Apostrophe (`) is the sixth solo album and eighteenth in total by Frank Zappa';
+    const expectedHTML = '<p>Apostrophe (`) is the sixth solo album and eighteenth in total by Frank Zappa\n</p>';
+    expect(convertMarkdownToHTML(markdown)).toStrictEqual(expectedHTML);
+  });
+
+  test('should throw an error if monospace markup is not closed', () => {
+    const markdown = 'This example will throw an `error';
+    expect(() => convertMarkdownToHTML(markdown)).toThrowError('Unclosed tag was found');
+  });
+});
+
+describe('nested tags testcases', () => {
+  test('should throw an error if the text is bold, italic, and monospaced simultaneously', () => {
+    const markdown = '**`_Ringo Starr_`** is an English musician, songwriter and the drummer for the Beatles';
+    expect(() => convertMarkdownToHTML(markdown)).toThrowError('Nested tag was found');
+  });
+
+  test('should throw an error if the text is bold and italic simultaneously', () => {
+    const markdown = '**_Sir James Paul McCartney_** is an English singer, songwriter and musician who gained worldwide fame with the Beatles';
+    expect(() => convertMarkdownToHTML(markdown)).toThrowError('Nested tag was found');
+  });
+
+  test('should throw an error if the text is bold and monospaced simultaneously', () => {
+    const markdown = '**`John Winston Ono Lennon`** was an English singer, songwriter and musician who gained worldwide fame as the co-leader of the Beatles';
+    expect(() => convertMarkdownToHTML(markdown)).toThrowError('Nested tag was found');
+  });
+
+  test('should throw an error if the text is monospaced and italic simultaneously', () => {
+    const markdown = '`_George Harrison_` was an English musician, singer and songwriter who achieved international fame as the lead guitarist of the Beatles';
+    expect(() => convertMarkdownToHTML(markdown)).toThrowError('Nested tag was found');
   });
 });

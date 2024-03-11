@@ -2,7 +2,6 @@
 
 import fs from 'node:fs';
 import { convertMarkdownToHTML } from './markdown-converter/markdown-converter.js';
-import { isMarkingNested } from './markdown-converter/validation.js';
 
 const main = () => {
   const args = process.argv.slice(2);
@@ -20,12 +19,6 @@ const main = () => {
   try {
     const markdownContent = fs.readFileSync(inputPath, 'utf8');
     const htmlContent = convertMarkdownToHTML(markdownContent);
-
-    if (!isMarkingNested(markdownContent)) {
-      const error = new Error('Nested tag was found');
-      error.errorCode = 403;
-      throw error;
-    }
 
     if (outputPath !== '') fs.writeFileSync(outputPath, htmlContent, 'utf8');
     else console.log(htmlContent);

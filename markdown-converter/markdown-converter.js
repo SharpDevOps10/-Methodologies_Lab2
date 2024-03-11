@@ -4,7 +4,7 @@ import {
   backtick,
   htmlTags,
   formattingRules,
-  checkForUnclosedTagsOutsideBlock,
+  checkForUnclosedTagsOutsideBlock, isMarkingNested,
 } from './validation.js';
 
 const processPreformattedBlock = (result, isPreformattedBlock, isInPreformattedBlock) => {
@@ -67,6 +67,12 @@ export const convertMarkdownToHTML = (markdown) => {
   const htmlContent = result.join('');
 
   checkForUnclosedTagsOutsideBlock(htmlContent, isInPreformattedBlock);
+
+  if (!isMarkingNested(markdown)) {
+    const error = new Error('Nested tag was found');
+    error.errorCode = 403;
+    throw error;
+  }
 
   if (isPreformattedBlock[0]) {
     const error = new Error('Unclosed tag was found');
