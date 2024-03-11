@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/SharpDevOps10/Methodologies_Lab1/issues"
   },
-  "homepage": "https://github.com/SharpDevOps10/Methodologies_Lab1#readme"
+  "homepage": "https://github.com/SharpDevOps10/Methodologies_Lab1#readme",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
 }
