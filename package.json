@@ -1,23 +1,30 @@
 {
-  "name": "methodologies_lab1",
-  "version": "1.0.0",
+  "name": "methodologies_lab2",
+  "version": "2.0.0",
   "type": "module",
   "description": "markdown to HTML convertor",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest"
+    }
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SharpDevOps10/Methodologies_Lab1.git"
+    "url": "git+https://github.com/SharpDevOps10/Methodologies_Lab2"
   },
   "author": "SharpDevOps10",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/SharpDevOps10/Methodologies_Lab1/issues"
+    "url": "https://github.com/SharpDevOps10/Methodologies_Lab2/issues"
   },
-  "homepage": "https://github.com/SharpDevOps10/Methodologies_Lab1#readme",
+  "homepage": "https://github.com/SharpDevOps10/Methodologies_Lab2#readme",
   "devDependencies": {
+    "@babel/preset-env": "^7.24.0",
+    "babel-jest": "^29.7.0",
     "jest": "^29.7.0"
   }
 }
