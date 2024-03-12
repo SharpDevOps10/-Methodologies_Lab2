@@ -33,3 +33,5 @@ $ node index.js -in input/1-common-marking.md -out output/1-common-marking.html
 # Revert commit link
 
 [Here you can find revert commit](https://github.com/SharpDevOps10/Methodologies_Lab1/commit/b025406f8fb6a1f109db3f7c6ea23e05fbb666c5)
+
+[Here you can fing the commit with failed tests](https://github.com/SharpDevOps10/Methodologies_Lab2/commit/4903c3aac3c6015d94b3510a383b7f8854c2113a)
