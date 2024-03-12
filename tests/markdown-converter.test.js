@@ -64,8 +64,8 @@ describe('monospace testcases', () => {
   });
 
   test('shouldn\'t convert monospaced signs separated from the text into HTML monospace tag', () => {
-    const markdown = 'This is ` example is not an element of the markup `';
-    const expectedHTML = '<p>This is ` example is not an element of the markup `\n</p>';
+    const markdown = 'This ` example is not an element of the markup `';
+    const expectedHTML = '<p>This ` example is not an element of the markup `\n</p>';
     expect(convertMarkdownToHTML(markdown)).toStrictEqual(expectedHTML);
   });
 
@@ -90,7 +90,7 @@ describe('preformatted block testcases', () => {
 
   test('shouldn\'t interpret formatting signs as an example of markup inside preformatted block', () => {
     const markdown = '```\n**Living** is _easy_ with eyes closed \n`Misunderstanding` all you see\n```';
-    const expectedHTML = '<pre>\n<b>Living</b> is _easy_ with eyes closed \n`Misunderstanding` all you see\n</pre>';
+    const expectedHTML = '<pre>\n**Living** is _easy_ with eyes closed \n`Misunderstanding` all you see\n</pre>';
     expect(convertMarkdownToHTML(markdown)).toStrictEqual(expectedHTML);
   });
 
