@@ -3,9 +3,10 @@
 import {
   backtick,
   htmlTags,
-  formattingRules,
+  formattingRulesToHTML,
   checkForUnclosedTagsOutsideBlock,
   isMarkingNested,
+  formattingRulesToANSI,
 } from './validation.js';
 
 const processPreformattedBlock = (result, isPreformattedBlock, isInPreformattedBlock) => {
@@ -32,14 +33,25 @@ const processParagraph = (result, isParagraphOpen, line, isInPreformattedBlock) 
       result.push(htmlTags.paragraphOpeningTag);
       isParagraphOpen[0] = true;
     }
-    for (const [regex, replacement] of Object.entries(formattingRules)) {
+    for (const [regex, replacement] of Object.entries(formattingRulesToHTML)) {
       line = line.replace(new RegExp(regex, 'g'), replacement);
     }
     result.push(line + '\n');
   }
 };
 
-export const convertMarkdownToHTML = (markdown) => {
+export const convertMarkdownToANSI = (markdown) => {
+  let convertedMarkdown = markdown;
+  for (const [regex, replacement] of Object.entries(formattingRulesToANSI)) {
+    convertedMarkdown = convertedMarkdown.replace(new RegExp(regex, 'g'), replacement);
+  }
+  return convertedMarkdown;
+};
+
+export const convertMarkdownToHTML = (markdown, options = {}) => {
+  let format = options.format || '';
+  if (!format && process.stdout.isTTY) format = 'ansi';
+
   const lines = markdown.split('\n');
   const result = [];
   const isParagraphOpen = [false];
@@ -80,6 +92,8 @@ export const convertMarkdownToHTML = (markdown) => {
     error.errorCode = 403;
     throw error;
   }
+
+  if (format === 'ansi') return convertMarkdownToANSI(markdown);
 
   return htmlContent;
 };
