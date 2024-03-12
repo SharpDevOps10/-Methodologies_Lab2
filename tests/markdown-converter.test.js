@@ -81,6 +81,37 @@ describe('monospace testcases', () => {
   });
 });
 
+describe('preformatted block testcases', () => {
+  test('should convert preformatted block into HTML text with <pre></pre> tag', () => {
+    const markdown = '```\nHappiness Is a Warm Gun\n```';
+    const expectedHTML = '<pre>\nHappiness Is a Warm Gun\n</pre>';
+    expect(convertMarkdownToHTML(markdown)).toStrictEqual(expectedHTML);
+  });
+
+  test('shouldn\'t interpret formatting signs as an example of markup inside preformatted block', () => {
+    const markdown = '```\n**Living** is _easy_ with eyes closed \n`Misunderstanding` all you see\n```';
+    const expectedHTML = '<pre>\n<b>Living</b> is _easy_ with eyes closed \n`Misunderstanding` all you see\n</pre>';
+    expect(convertMarkdownToHTML(markdown)).toStrictEqual(expectedHTML);
+  });
+
+  test('shouldn\'t interpret unclosed formatting signs as an example of unclosed tags inside preformatted block', () => {
+    const markdown = '```\nPlease **could you _stop the noise? \nI\'m trying `to get some rest\n```';
+    const expectedHTML = '<pre>\nPlease **could you _stop the noise? \nI\'m trying `to get some rest\n</pre>';
+    expect(convertMarkdownToHTML(markdown)).toStrictEqual(expectedHTML);
+  });
+
+  test('shouldn\'t interpret nested formatting signs as an example of nested tags inside preformatted block', () => {
+    const markdown = '```\nAnd **_everything_** _`under`_ the sun is in tune \nBut the sun is **_eclipsed_** by the moon\n```';
+    const expectedHTML = '<pre>\nAnd **_everything_** _`under`_ the sun is in tune \nBut the sun is **_eclipsed_** by the moon\n</pre>';
+    expect(convertMarkdownToHTML(markdown)).toStrictEqual(expectedHTML);
+  });
+
+  test('should throw an error if preformatted block is not closed', () => {
+    const markdown = '```\nClose to the end, down by the corner \nDown at the edge, round by a river\n';
+    expect(() => convertMarkdownToHTML(markdown)).toThrowError('Unclosed tag was found');
+  });
+});
+
 describe('nested tags testcases', () => {
   test('should throw an error if the text is bold, italic, and monospaced simultaneously', () => {
     const markdown = '**`_Ringo Starr_`** is an English musician, songwriter and the drummer for the Beatles';

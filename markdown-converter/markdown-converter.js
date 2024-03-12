@@ -4,7 +4,8 @@ import {
   backtick,
   htmlTags,
   formattingRules,
-  checkForUnclosedTagsOutsideBlock, isMarkingNested,
+  checkForUnclosedTagsOutsideBlock,
+  isMarkingNested,
 } from './validation.js';
 
 const processPreformattedBlock = (result, isPreformattedBlock, isInPreformattedBlock) => {
