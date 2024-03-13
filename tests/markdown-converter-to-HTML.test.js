@@ -1,6 +1,6 @@
 import { convertMarkdownToHTML } from '../markdown-converter/markdown-converter.js';
 
-describe('bold testcases', () => {
+describe('HTML: bold testcases', () => {
   test('should convert bold text into HTML text with <b></b> tag', () => {
     const markdown = 'Hello **bold world**!';
     const expectedHTML = '<p>Hello <b>bold world</b>!\n</p>';
@@ -19,7 +19,7 @@ describe('bold testcases', () => {
   });
 });
 
-describe('italic testcases', () => {
+describe('HTML: italic testcases', () => {
   test('should convert italic text into HTML text with <i></i> tag', () => {
     const markdown = 'Hello _italic world_!';
     const expectedHTML = '<p>Hello <i>italic world</i>!\n</p>';
@@ -50,13 +50,13 @@ describe('italic testcases', () => {
     expect(convertMarkdownToHTML(markdown, { format: 'html' })).toStrictEqual(expectedHTML);
   });
 
-  test('should throw an error if monospace markup is not closed', () => {
+  test('should throw an error if italic markup is not closed', () => {
     const markdown = 'This example will throw an _error';
     expect(() => convertMarkdownToHTML(markdown, { format: 'html' })).toThrowError('Unclosed tag was found');
   });
 });
 
-describe('monospace testcases', () => {
+describe('HTML: monospace testcases', () => {
   test('should convert monospaced text into HTML text with <tt></tt> tag', () => {
     const markdown = 'Hello `monospaced world`!';
     const expectedHTML = '<p>Hello <tt>monospaced world</tt>!\n</p>';
@@ -81,7 +81,7 @@ describe('monospace testcases', () => {
   });
 });
 
-describe('preformatted block testcases', () => {
+describe('HTML: preformatted block testcases', () => {
   test('should convert preformatted block into HTML text with <pre></pre> tag', () => {
     const markdown = '```\nHappiness Is a Warm Gun\n```';
     const expectedHTML = '<pre>\nHappiness Is a Warm Gun\n</pre>';
@@ -112,7 +112,7 @@ describe('preformatted block testcases', () => {
   });
 });
 
-describe('nested tags testcases', () => {
+describe('HTML: nested tags testcases', () => {
   test('should throw an error if the text is bold, italic, and monospaced simultaneously', () => {
     const markdown = '**`_Ringo Starr_`** is an English musician, songwriter and the drummer for the Beatles';
     expect(() => convertMarkdownToHTML(markdown, { format: 'html' })).toThrowError('Nested tag was found');
