@@ -111,3 +111,25 @@ describe('ANSI: preformatted block testcases', () => {
     expect(() => convertMarkdownToHTML(markdown, { format: 'ansi' })).toThrowError('Unclosed tag was found');
   });
 });
+
+describe('ANSI: nested tags testcases', () => {
+  test('should throw an error if the text is bold, italic, and monospaced simultaneously', () => {
+    const markdown = '**`Thomas Yorke`** is an English musician who is the main vocalist and songwriter of Radiohead';
+    expect(() => convertMarkdownToHTML(markdown, { format: 'ansi' })).toThrowError('Nested tag was found');
+  });
+
+  test('should throw an error if the text is bold and italic simultaneously', () => {
+    const markdown = '**_Sir Brian Harold May_** is an English musician, songwriter, the lead guitarist of Queen';
+    expect(() => convertMarkdownToHTML(markdown, { format: 'ansi' })).toThrowError('Nested tag was found');
+  });
+
+  test('should throw an error if the text is bold and monospaced simultaneously', () => {
+    const markdown = '**`_Sir George Henry Martin_`** was an English record producer, arranger, composer, and "Fifth Beatle"';
+    expect(() => convertMarkdownToHTML(markdown, { format: 'ansi' })).toThrowError('Nested tag was found');
+  });
+
+  test('should throw an error if the text is monospaced and italic simultaneously', () => {
+    const markdown = '`_Alan Parsons_` is an English sound engineer on album "The Dark Side of the Moon"';
+    expect(() => convertMarkdownToHTML(markdown, { format: 'ansi' })).toThrowError('Nested tag was found');
+  });
+});
