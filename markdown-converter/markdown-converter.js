@@ -40,11 +40,24 @@ const processParagraph = (result, isParagraphOpen, line, isInPreformattedBlock) 
   }
 };
 
-export const convertMarkdownToANSI = (markdown) => {
+const convertMarkdownToANSI = (markdown) => {
   let convertedMarkdown = markdown;
+
+  const codeBlocks = [];
+  convertedMarkdown = convertedMarkdown.replace(/```((?:.|\n)*?)```/g, (match, code) => {
+    code = code.replace(/^[ \t]*\n/gm, '');
+    code = code.replace(/[ \t]*\n$/gm, '');
+    codeBlocks.push(code);
+    return `CODE_BLOCK_${codeBlocks.length - 1}_PLACEHOLDER`;
+  });
+
   for (const [regex, replacement] of Object.entries(formattingRulesToANSI)) {
     convertedMarkdown = convertedMarkdown.replace(new RegExp(regex, 'g'), replacement);
   }
+
+  convertedMarkdown = convertedMarkdown.replace(/CODE_BLOCK_(\d+)_PLACEHOLDER/g, (match, index) => {
+    return '\x1b[7m' + codeBlocks[index] + '\x1b[27m';
+  });
   return convertedMarkdown;
 };
 
