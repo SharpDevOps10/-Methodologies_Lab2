@@ -1,15 +1,21 @@
 'use strict';
 
 import fs from 'node:fs';
-import { convertMarkdownToHTML } from './markdown-converter/markdown-converter.js';
+import { convertMarkdown } from './markdown-converter/markdown-converter.js';
 
 const main = () => {
   const args = process.argv.slice(2);
-  const inputPathIndex = args.indexOf('-in');
-  const outputPathIndex = args.indexOf('-out');
+  const inputPathIndex = args.indexOf('--in');
+  const outputPathIndex = args.indexOf('--out');
   const formatIndex = args.findIndex((arg) => arg.startsWith('--format='));
   let format = '';
-  if (formatIndex !== -1) format = args[formatIndex].split('=')[1].toLowerCase();
+  if (formatIndex !== -1) {
+    format = args[formatIndex].split('=')[1].toLowerCase();
+    if (format !== 'html' && format !== 'ansi') {
+      console.error('Error: Invalid format specified. Please use "html" or "ansi" for --format=');
+      process.exit(1);
+    }
+  }
 
   const inputPath = args[inputPathIndex + 1];
   const outputPath = outputPathIndex !== -1 && args.length > outputPathIndex + 1 ? args[outputPathIndex + 1] : '';
@@ -24,8 +30,8 @@ const main = () => {
   try {
     const markdownContent = fs.readFileSync(inputPath, 'utf8');
     let outputContent;
-    if (format === 'ansi') outputContent = convertMarkdownToHTML(markdownContent);
-    else outputContent = convertMarkdownToHTML(markdownContent, { format: 'html' });
+    if (format === 'ansi') outputContent = convertMarkdown(markdownContent);
+    else outputContent = convertMarkdown(markdownContent, { format: 'html' });
 
     if (outputPath !== '') fs.writeFileSync(outputPath, outputContent, 'utf8');
     else console.log(outputContent);

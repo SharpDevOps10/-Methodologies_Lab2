@@ -44,7 +44,9 @@ const convertMarkdownToANSI = (markdown) => {
   let convertedMarkdown = markdown;
 
   const codeBlocks = [];
-  convertedMarkdown = convertedMarkdown.replace(/```((?:.|\n)*?)```/g, (match, code) => {
+  const codeBlockRegex = /```((?:.|\n)*?)```/g;
+  const placeholderRegex = /CODE_BLOCK_(\d+)_PLACEHOLDER/g;
+  convertedMarkdown = convertedMarkdown.replace(codeBlockRegex, (match, code) => {
     code = code.replace(/^[ \t]*\n/gm, '');
     code = code.replace(/[ \t]*\n$/gm, '');
     codeBlocks.push(code);
@@ -55,13 +57,13 @@ const convertMarkdownToANSI = (markdown) => {
     convertedMarkdown = convertedMarkdown.replace(new RegExp(regex, 'g'), replacement);
   }
 
-  convertedMarkdown = convertedMarkdown.replace(/CODE_BLOCK_(\d+)_PLACEHOLDER/g, (match, index) => {
+  convertedMarkdown = convertedMarkdown.replace(placeholderRegex, (match, index) => {
     return '\x1b[7m' + codeBlocks[index] + '\x1b[27m';
   });
   return convertedMarkdown;
 };
 
-export const convertMarkdownToHTML = (markdown, options = {}) => {
+export const convertMarkdown = (markdown, options = {}) => {
   let format = options.format || '';
   if (!format && process.stdout.isTTY) format = 'ansi';
 
