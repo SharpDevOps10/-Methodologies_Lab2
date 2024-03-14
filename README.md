@@ -1,4 +1,4 @@
-# Markdown to HTML converter 
+# Markdown to HTML & ANSI converter 
 
 This is a tool for converting Markdown text format into HTML. The core functionality includes handling 
 various tags such as bold text (**), monospaced text (`), and italic text (_). In addition, processing of code blocks using 
